@@ -39,7 +39,24 @@ class _NewExpenseState extends State<NewExpense> {
         amoutIsInvalid ||
         _selectedDate == null) {
       // show input error message
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text(
+              'Please make sure a valid title, amount, date and category was entered.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Okey'),
+            ),
+          ],
+        ),
+      );
+      return;
     }
+
+    // use the entered data and create a new expense
   }
 
   @override

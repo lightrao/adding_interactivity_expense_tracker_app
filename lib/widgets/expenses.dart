@@ -122,6 +122,9 @@ class _ExpensesState extends State<Expenses> {
                 Expanded(
                   child: mainContent,
                 ),
+                const SizedBox(
+                  width: 45,
+                ),
               ],
             ),
     );

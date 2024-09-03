@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:adding_interactivity_expense_tracker_app/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
@@ -34,13 +37,24 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  void _submitExpenseData() {
-    final enteredAmount = double.tryParse(_amountContorler.text);
-    final amoutIsInvalid = (enteredAmount == null) || (enteredAmount <= 0);
-    if (_titleController.text.trim().isEmpty ||
-        amoutIsInvalid ||
-        _selectedDate == null) {
-      // show input error message
+  void _showDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+          context: context,
+          builder: (ctx) {
+            return CupertinoAlertDialog(
+              title: const Text('Invalid Input'),
+              content: const Text(
+                  'Please make sure a valid title, amount, date and category was entered.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('Okey'),
+                ),
+              ],
+            );
+          });
+    } else {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -55,6 +69,17 @@ class _NewExpenseState extends State<NewExpense> {
           ],
         ),
       );
+    }
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountContorler.text);
+    final amoutIsInvalid = (enteredAmount == null) || (enteredAmount <= 0);
+    if (_titleController.text.trim().isEmpty ||
+        amoutIsInvalid ||
+        _selectedDate == null) {
+      // show input error message
+      _showDialog();
       return;
     }
 
